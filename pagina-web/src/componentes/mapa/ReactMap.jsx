@@ -38,23 +38,23 @@ export const ReactMap = ({id,polireal}) => {
     
 
     return (
-        <MapContainer center={center} zoom={4}>
+        <MapContainer center={center} zoom={12}>
             {/* <ChangeView center={center} zoom={16} />  */}
             <Polyline pathOptions={limeOptions} positions={polyline} />
             <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            {
-                polireal.map(punto =>{
-                    <Marker position={[punto.Latitud,punto.Longitud]} icon={CircleIcon}>
-                        <Popup><pre>{"Latitude: "+ punto.Latitud + " ,Longitude: "+ punto.Longitud + ",Hora: " + punto.Hora}</pre></Popup>
-                    </Marker>
-                })
-            }
             <Marker position={center} icon={MarkerIcon} className="marcador">
                 <Popup><pre>{"Latitude: "+ center[0]+ " ,Longitude: "+ center[1]}</pre></Popup>
             </Marker>
+            {
+                polireal.map(punto =>(
+                    <Marker position={[punto.Latitud.toString(),punto.Longitud.toString()]} icon={CircleIcon}>
+                        <Popup><pre>{"Hora: " + punto.Hora}</pre></Popup>
+                    </Marker>
+                ))
+            }
             <Marker position={mfinal} icon={MarkerIcon} >
                 <Popup><pre>{"Latitude: "+ center[0]+ " ,Longitude: "+ center[1]}</pre></Popup>
             </Marker>
