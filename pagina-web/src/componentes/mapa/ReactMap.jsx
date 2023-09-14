@@ -3,8 +3,6 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline} from 'react-l
 import 'leaflet/dist/leaflet.css';
 import '../../css/react-leaflet.css';
 import {CircleIcon, MarkerIcon, StartIcon} from './react-leaflet-icon.js';
-import { useSelector } from 'react-redux';
-import { useMapEvents } from 'react-leaflet/hooks'
 
 export const ReactMap = ({id,polireal}) => {
     var polyline=[]
