@@ -35,7 +35,6 @@ export const Home = () => {
                         ':hover': {backgroundColor:'red',opacity:0.7},
                         position:'fixed',
                         right:'10vh',
-                        right:60,
                         bottom:50
                         }}
                 >
