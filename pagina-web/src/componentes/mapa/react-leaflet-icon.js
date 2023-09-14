@@ -2,7 +2,7 @@ import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import redcircle from '/redcircle.png'
-import start from '/start.jpg'
+import start from '/start2.png'
 
 export const MarkerIcon = L.icon({
     iconUrl: icon,

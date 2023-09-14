@@ -2,4 +2,5 @@
     margin-top: 25px;
     width: 90vw;
     height: 90vh;
+    z-index: 1;
 }
