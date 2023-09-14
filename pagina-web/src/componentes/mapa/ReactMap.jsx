@@ -32,12 +32,12 @@ export const ReactMap = ({id,polireal}) => {
         map.setView(center, zoom);
         return null;
     }
-    const limeOptions = { color: 'blue'}
+    const limeOptions = { color: 'lime'}
     
 
     return (
         <MapContainer center={center} zoom={12}>
-            {/* <ChangeView center={center} zoom={16} />  */}
+           {/*  { <ChangeView center={center} />  } */}
             <Polyline pathOptions={limeOptions} positions={polyline} />
             <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
