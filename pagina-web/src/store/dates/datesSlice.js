@@ -8,7 +8,9 @@ export const datesSlice = createSlice({
         time: '',
         long:'',
         lat: '',
-        lasid:0,
+        lasid: localStorage.getItem("lastId")
+        ? localStorage.getItem("lastId")
+        : 0,
         polireal: localStorage.getItem("polireal")
         ? JSON.parse(localStorage.getItem("polireal"))
         : [],
@@ -20,12 +22,12 @@ export const datesSlice = createSlice({
             state.time=action.payload.Hora;
             state.long=action.payload.Longitud;
             state.lat=action.payload.Latitud;
-            if(state.lasid!==action.payload.IdEnvio){
+            if(state.lasid!=action.payload.IdEnvio){
                 state.polireal.push(action.payload);
-                if(state.lasid !== 0) {
-                    localStorage.setItem("polireal", JSON.stringify(state.polireal));
-                }
+                localStorage.setItem("polireal", JSON.stringify(state.polireal));
                 state.lasid=action.payload.IdEnvio;
+                localStorage.removeItem("lasId");
+                localStorage.setItem("lastId", state.lasid);
             };
         },
     }

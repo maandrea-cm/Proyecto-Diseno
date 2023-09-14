@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../../css/react-leaflet.css';
-import {CircleIcon, MarkerIcon} from './react-leaflet-icon.js';
+import {CircleIcon, MarkerIcon, StartIcon} from './react-leaflet-icon.js';
 import { useSelector } from 'react-redux';
 import { useMapEvents } from 'react-leaflet/hooks'
 
@@ -34,7 +34,7 @@ export const ReactMap = ({id,polireal}) => {
         map.setView(center, zoom);
         return null;
     }
-    const limeOptions = { color: 'lime' }
+    const limeOptions = { color: 'lime'}
     
 
     return (
@@ -45,7 +45,7 @@ export const ReactMap = ({id,polireal}) => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            <Marker position={center} icon={MarkerIcon} className="marcador">
+            <Marker position={center} icon={StartIcon} className="marcador">
                 <Popup><pre>{"Latitude: "+ center[0]+ " ,Longitude: "+ center[1]}</pre></Popup>
             </Marker>
             {

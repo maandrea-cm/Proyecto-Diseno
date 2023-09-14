@@ -1,5 +1,4 @@
 import React from 'react'
-import {useSelector} from 'react-redux';
 import '../index.css'
 
 export const Table = ({date,time,long,lat}) => {
@@ -27,7 +26,6 @@ export const Table = ({date,time,long,lat}) => {
                 </tbody>
             
             </table>
-            {/* <button onClick={sendToDb}></button> */}
         </section>
     )
 }
