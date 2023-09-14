@@ -31,12 +31,8 @@ export const datesSlice = createSlice({
             };
         },
         limpiarpoli:(state) => {
-            state.lasid =localStorage.getItem("lastId")
-            ? localStorage.getItem("lastId")
-            : 0;
-            state.polireal= localStorage.getItem("polireal")
-            ? JSON.parse(localStorage.getItem("polireal"))
-            : [];
+            state.lasid = 0
+            state.polireal= [];
         }
     }
 });
