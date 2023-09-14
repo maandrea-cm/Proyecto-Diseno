@@ -4,8 +4,9 @@ import { Table } from '../componentes/Table'
 import { ReactMap } from '../componentes/mapa/ReactMap'
 import { Cargando } from '../componentes/Cargando'
 import {searchDates} from '../store/dates/thunks'
-import { IconButton } from '@mui/material'
+import { IconButton, darkScrollbar } from '@mui/material'
 import { AddOutlined } from '@mui/icons-material'
+import { limpiarpoli } from '../store/dates/datesSlice'
 
 export const Home = () => {
     const dispatch=useDispatch();
@@ -15,7 +16,8 @@ export const Home = () => {
 
     const removeLocal = () =>{
         localStorage.removeItem("polireal");
-        localStorage.removeItem("lastId")   
+        localStorage.removeItem("lastId");
+        dispatch(limpiarpoli()) 
     }
 
     const Datos = useSelector(state => state.dates)
