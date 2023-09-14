@@ -1,5 +1,5 @@
 const env = {
-    FETCHURL:'http://54.162.63.142:8050/recibir'
+    FETCHURL:'http://54.224.216.161:8050/recibir'
 }
 
 export default env;
