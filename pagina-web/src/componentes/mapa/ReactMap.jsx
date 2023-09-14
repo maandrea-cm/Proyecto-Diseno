@@ -32,7 +32,7 @@ export const ReactMap = ({id,polireal}) => {
         map.setView(center, zoom);
         return null;
     }
-    const limeOptions = { color: 'lime'}
+    const limeOptions = { color: 'blue'}
     
 
     return (
