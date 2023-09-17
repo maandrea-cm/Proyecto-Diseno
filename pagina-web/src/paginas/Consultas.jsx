@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -16,11 +16,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { useDispatch, useSelector } from 'react-redux'
-import { Table } from '../componentes/Table'
-import { ReactMap } from '../componentes/mapa/ReactMap'
-import {searchDates} from '../store/dates/thunks'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { ReactMapConsulta } from '../componentes/mapa/ReactMapConsulta';
+import { useSelector } from 'react-redux';
+import HomeIcon from '@mui/icons-material/Home';
+import { SideBar } from '../componentes/SideBar';
 
 const drawerWidth = 280;
 
@@ -40,8 +39,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
             }),
             marginLeft: 0,
         }),
-    }),
-);
+        }),
+    );
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -69,24 +68,29 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-export const Home = () => {
-
+export const Consultas = () => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
     };
+
     const handleDrawerClose = () => {
         setOpen(false);
     };
+    const Datos = {
+        lat:11.018055555556,
+        long:-74.851111111111,
+        id: 0
+    }
 
-    const dispatch=useDispatch();
-    setInterval(() => {
-        dispatch(searchDates())
-    }, 1000);
-    const Datos = useSelector(state => state.dates)
-    
+    const {policonsultas} = useSelector(state => state.dates)
+    const [polyline, setpolyline] = useState([])
+
+    useEffect(() => {
+        setpolyline(policonsultas)
+    }, [policonsultas.length])
     return (
         <Box sx={{ display: 'flex'}}>
             <CssBaseline />
@@ -102,7 +106,7 @@ export const Home = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Barra de Inicio
+                        Barra de consultas
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -121,7 +125,7 @@ export const Home = () => {
             >
                 <DrawerHeader>
                     <Typography variant='h6' noWrap component='div'>
-                        Home
+                        Seleccion de Rango de fechas
                     </Typography>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -130,24 +134,23 @@ export const Home = () => {
                 <Divider />
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton component="a" href="/consultas">
+                        <ListItemButton component="a" href="/">
                             <ListItemIcon>
-                                <CalendarMonthIcon/>
+                                <HomeIcon/>
                             </ListItemIcon>
-                            <ListItemText primary={'Consultas'} />
+                            <ListItemText primary={'Home'} />
                         </ListItemButton>
                     </ListItem>
                 </List>
                 <Divider />
                 <List>
-                    <p>Por ahora no hay nada</p>
+                    <SideBar/>
                 </List>
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                <Table {...Datos}/>
-                <ReactMap {...Datos}/>
+                <ReactMapConsulta polyline={polyline} {...Datos}/>
             </Main>
-        </Box>
+    </Box>
     )
 }

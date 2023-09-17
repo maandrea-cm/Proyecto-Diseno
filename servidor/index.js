@@ -37,6 +37,32 @@ app.get('/recibir',(req,res) => {
     });
 })
 
+app.get('/consultas',(req,res) => {
+
+    var {inicial,final} = req.query;
+    console.log(inicial,final)
+    let tabledb = env.TABLE;
+
+    conexion.query(`SELECT * FROM ${tabledb} WHERE (Fecha BETWEEN '${inicial}' AND '${final}')`, (err, result) => {
+        if (!err) {
+            let info = result;
+            let latlon = Array(0);
+            let timeStamp = Array(0);
+            // for (var i=0;i<info.length;i++){
+            //     latlon[i] = [info[i]['Latitud'],info[i]['Longitud']];
+            //     timeStamp[i] = [info[i]['Fecha'],info[i]['Hora']];
+            // }
+            res.status(200).json({
+                // data: latlon,
+                // time:timeStamp
+                data: info
+            });
+        }else {
+            console.log(err);
+        }
+    })
+})
+
 socket.on('message', (msg, rinfo) => {
 
     console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);

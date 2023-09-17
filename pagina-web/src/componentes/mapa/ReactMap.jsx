@@ -5,6 +5,7 @@ import '../../css/react-leaflet.css';
 import {CircleIcon, MarkerIcon, StartIcon} from './react-leaflet-icon.js';
 
 export const ReactMap = ({id,polireal}) => {
+    
     var polyline=[]
     polireal.map(datos =>{
         var latlong=[datos.Latitud,datos.Longitud];
@@ -38,7 +39,7 @@ export const ReactMap = ({id,polireal}) => {
     return (
         <MapContainer center={center} zoom={12}>
            {/*  { <ChangeView center={center} />  } */}
-            <Polyline pathOptions={limeOptions} positions={polyline} />
+            <Polyline pathOptions={limeOptions} positions={polyline}/>
             <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -48,7 +49,7 @@ export const ReactMap = ({id,polireal}) => {
             </Marker>
             {
                 polireal.map(punto =>(
-                    <Marker position={[punto.Latitud.toString(),punto.Longitud.toString()]} icon={CircleIcon}>
+                    <Marker key={punto.IdEnvio} position={[punto.Latitud.toString(),punto.Longitud.toString()]} icon={CircleIcon}>
                         <Popup><pre>{"Hora: " + punto.Hora}</pre></Popup>
                     </Marker>
                 ))

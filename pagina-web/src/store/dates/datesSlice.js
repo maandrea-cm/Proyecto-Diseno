@@ -10,6 +10,9 @@ export const datesSlice = createSlice({
         lat: '',
         lasid: 0,
         polireal: [],
+        datosconsulta:[],
+        policonsultas:[]
+
     },
     reducers: {
         searchingDates: (state,action) =>{
@@ -23,11 +26,21 @@ export const datesSlice = createSlice({
                 state.lasid=action.payload.IdEnvio;
             };
         },
+        polilineDates: (state,action) => {
+            state.datosconsulta=action.payload;
+            var polyline=[]
+            state.datosconsulta.map(datos =>{
+                var latlong=[datos.Latitud,datos.Longitud];
+                polyline.push(latlong)
+            })
+            state.policonsultas=polyline;
+        }
     }
 });
 
 export const { 
 
-    searchingDates
+    searchingDates,
+    polilineDates
 
 } = datesSlice.actions;

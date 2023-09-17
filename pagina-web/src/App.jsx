@@ -1,10 +1,15 @@
+import { useDispatch } from 'react-redux';
 import './App.css'
-import { Home } from './paginas/Home'
+import { searchDates } from './store/dates/thunks';
+import { AppRouter } from './router/AppRouter'
+
 
 function App() {
+  const dispatch=useDispatch();
+  dispatch(searchDates())
 
   return (
-    <Home/>
+    <AppRouter/>
   )
 }
 
