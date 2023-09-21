@@ -42,6 +42,10 @@ export const SideBar = () => {
     const buscarfecha = () =>{
         var final = finalDate.toLocaleDateString();
         var inicial = initialDate.toLocaleDateString();
+        if(final==inicial && hinicial>=hfinal){
+            alert('La fecha final no puede ser menor a la inical')
+            return
+        }
         var final = final.split('/').reverse().join('-');
         var inicial = inicial.split('/').reverse().join('-');
         var inicialcompleto= inicial+'T'+hinicial;
