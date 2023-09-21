@@ -50,6 +50,8 @@ app.get('/recibir',(req,res) => {
 app.get('/consultas',(req,res) => {
 
     var {inicial,final} = req.query;
+    console.log('Se recibieron los parametros: ')
+    console.log('inicial: ',inicial,' final: ',final)
     inicial = inicial.toString()
     final = final.toString()
     var [fechai,horai] = inicial.split('T')
@@ -58,6 +60,8 @@ app.get('/consultas',(req,res) => {
     var [yearf,mesf,diaf] = fechaf.split('-')
     fechai = verifecha(yeari,mesi,diai)
     fechaf = verifecha(yearf,mesf,diaf)
+    console.log('Se realizara consulta con: ')
+    console.log('inicial: ',fechai,' ',horai,' final: ',fechaf,' ',horaf)
     let tabledb = env.TABLE;
     const sqlpet = `SELECT * FROM ${tabledb} WHERE CONCAT(Fecha, ' ', Hora) BETWEEN '${fechai} ${horai}' AND '${fechaf} ${horaf}';`
     conexion.query(sqlpet, (err, result) => {

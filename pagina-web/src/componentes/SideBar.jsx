@@ -3,7 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Box,Button,Typography } from "@mui/material"
 import { useDispatch } from 'react-redux';
-import { searchDatesPoliline, searchDatesPolilinewtime } from '../store/dates/thunks';
+import {searchDatesPolilinewtime } from '../store/dates/thunks';
 
 
 export const SideBar = () => {
@@ -30,15 +30,6 @@ export const SideBar = () => {
         setmindateff(data)
     }
     
-    // const buscarfecha = () =>{
-    //     var final = finalDate.toLocaleDateString();
-    //     var inicial = initialDate.toLocaleDateString();
-    //     var final = final.split('/').reverse().join('-');
-    //     var inicial = inicial.split('/').reverse().join('-');
-    //     var inicialcompleto= inicial+'T'+hinicial;
-    //     var finalcompleto = final+'T'+hfinal;
-    //     dispatch(searchDatesPoliline(inicial,final))
-    // } 
     const buscarfecha = () =>{
         var final = finalDate.toLocaleDateString();
         var inicial = initialDate.toLocaleDateString();

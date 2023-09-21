@@ -17,6 +17,7 @@ export const searchDates = () => {
 }
 
 export const searchDatesPolilinewtime = (inicial,final) => {
+    console.log('inicial: ',inicial,' final: ',final)
     return async(dispatch) => {
         await fetch(`${env.FETCHURL}/consultas?inicial=${inicial}&final=${final}`)
         .then(response => response.json())
