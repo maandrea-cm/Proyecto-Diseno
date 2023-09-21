@@ -16,21 +16,9 @@ export const searchDates = () => {
 
 }
 
-export const searchDatesPoliline = (inicial,final) => {
-
-    return async(dispatch) => {
-        await fetch(`${env.FETCHURL}/consultas?inicial=${inicial}&final=${final}`)
-        .then(response => response.json())
-        .then(data => {
-            dispatch(polilineDates(data.data));
-        })
-    }
-
-}
-
 export const searchDatesPolilinewtime = (inicial,final) => {
     return async(dispatch) => {
-        await fetch(`${env.FETCHURL}/consultas2?inicial=${inicial}&final=${final}`)
+        await fetch(`${env.FETCHURL}/consultas?inicial=${inicial}&final=${final}`)
         .then(response => response.json())
         .then(data => {
             console.log(data)

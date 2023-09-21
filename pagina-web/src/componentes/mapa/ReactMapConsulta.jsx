@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../../css/react-leaflet.css';
-import {CircleIcon, FlagIcon, MarkerIcon, TaxiIcon} from './react-leaflet-icon.js';
+import {CircleIcon, FlagIcon, MarkerIcon, StartIcon, TaxiIcon} from './react-leaflet-icon.js';
 import { useSelector } from 'react-redux';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { IconButton } from '@mui/material';
@@ -59,7 +59,7 @@ export const ReactMapConsulta = ({lat,long,polyline=[]}) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
-                <Marker position={center} icon={TaxiIcon} >
+                <Marker position={center} icon={StartIcon} >
                     <Popup><pre>inicio</pre></Popup>
                 </Marker>
                 {

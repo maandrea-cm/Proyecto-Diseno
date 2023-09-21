@@ -15,6 +15,16 @@ export const conexion = mysql.createConnection({
     password : env.PASSWORD
 });
 
+function verifecha(a,m,d) {
+    if (d < 10) {
+        d = "0" + d;
+    }
+    if (m < 10) {
+        m = "0" + m;
+    }
+    return(a+'-'+m+'-'+d)
+}
+
 conexion.connect(function(err) {
     if (err) {
         console.error('Error de conexion: ' + err.stack);
@@ -40,30 +50,16 @@ app.get('/recibir',(req,res) => {
 app.get('/consultas',(req,res) => {
 
     var {inicial,final} = req.query;
-    console.log(inicial,final)
-    let tabledb = env.TABLE;
-    const sqlpet=`SELECT * FROM ${tabledb} WHERE (Fecha BETWEEN '${inicial}' AND '${final}')`
-    conexion.query(sqlpet, (err, result) => {
-        if (!err) {
-            let info = result;
-            res.status(200).json({
-                data: info
-            });
-        }else {
-            console.log(err);
-        }
-    })
-})
-
-app.get('/consultas2',(req,res) => {
-
-    var {inicial,final} = req.query;
     inicial = inicial.toString()
     final = final.toString()
     var [fechai,horai] = inicial.split('T')
     var [fechaf,horaf] = final.split('T')
+    var [yeari,mesi,diai] = fechai.split('-')
+    var [yearf,mesf,diaf] = fechaf.split('-')
+    fechai = verifecha(yeari,mesi,diai)
+    fechaf = verifecha(yearf,mesf,diaf)
     let tabledb = env.TABLE;
-    const sqlpet=`SELECT * FROM ${tabledb} WHERE ((Fecha BETWEEN STR_TO_DATE('${fechai}','%Y-%m-%d') AND STR_TO_DATE('${fechaf}','%Y-%m-%d'))) AND (Hora BETWEEN STR_TO_DATE('${horai}','%H:%i:%s') AND STR_TO_DATE('${horaf}','%H:%i:%s'))`
+    const sqlpet = `SELECT * FROM ${tabledb} WHERE CONCAT(Fecha, ' ', Hora) BETWEEN '${fechai} ${horai}' AND '${fechaf} ${horaf}';`
     conexion.query(sqlpet, (err, result) => {
         if (!err) {
             let info = result;
