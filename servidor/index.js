@@ -42,19 +42,32 @@ app.get('/consultas',(req,res) => {
     var {inicial,final} = req.query;
     console.log(inicial,final)
     let tabledb = env.TABLE;
-
-    conexion.query(`SELECT * FROM ${tabledb} WHERE (Fecha BETWEEN '${inicial}' AND '${final}')`, (err, result) => {
+    const sqlpet=`SELECT * FROM ${tabledb} WHERE (Fecha BETWEEN '${inicial}' AND '${final}')`
+    conexion.query(sqlpet, (err, result) => {
         if (!err) {
             let info = result;
-            let latlon = Array(0);
-            let timeStamp = Array(0);
-            // for (var i=0;i<info.length;i++){
-            //     latlon[i] = [info[i]['Latitud'],info[i]['Longitud']];
-            //     timeStamp[i] = [info[i]['Fecha'],info[i]['Hora']];
-            // }
             res.status(200).json({
-                // data: latlon,
-                // time:timeStamp
+                data: info
+            });
+        }else {
+            console.log(err);
+        }
+    })
+})
+
+app.get('/consultas2',(req,res) => {
+
+    var {inicial,final} = req.query;
+    inicial = inicial.toString()
+    final = final.toString()
+    var [fechai,horai] = inicial.split('T')
+    var [fechaf,horaf] = final.split('T')
+    let tabledb = env.TABLE;
+    const sqlpet=`SELECT * FROM ${tabledb} WHERE ((Fecha BETWEEN STR_TO_DATE('${fechai}','%Y-%m-%d') AND STR_TO_DATE('${fechaf}','%Y-%m-%d'))) AND (Hora BETWEEN STR_TO_DATE('${horai}','%H:%i:%s') AND STR_TO_DATE('${horaf}','%H:%i:%s'))`
+    conexion.query(sqlpet, (err, result) => {
+        if (!err) {
+            let info = result;
+            res.status(200).json({
                 data: info
             });
         }else {

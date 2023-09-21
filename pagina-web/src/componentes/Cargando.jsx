@@ -9,7 +9,7 @@ export const Cargando = () => {
             direction="column"
             alignItems='center'
             justifyContent='center'
-            sx={{minHeight:'100vh',minWidth:'100vh',backgroundColor:'blue',padding:4}}
+            sx={{minHeight:'100vh',minWidth:'100vh',backgroundColor:'#feeb00',padding:4}}
         >
             <Grid container
                 alignContent='center' justifyContent= 'center'>

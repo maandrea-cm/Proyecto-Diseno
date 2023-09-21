@@ -139,9 +139,6 @@ export const Home = () => {
                     </ListItem>
                 </List>
                 <Divider />
-                <List>
-                    <p>Por ahora no hay nada</p>
-                </List>
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
