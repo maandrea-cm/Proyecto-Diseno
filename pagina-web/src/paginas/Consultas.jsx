@@ -20,6 +20,7 @@ import { ReactMapConsulta } from '../componentes/mapa/ReactMapConsulta';
 import { useSelector } from 'react-redux';
 import HomeIcon from '@mui/icons-material/Home';
 import { SideBar } from '../componentes/SideBar';
+import { Slider } from '@mui/material';
 
 const drawerWidth = 280;
 
@@ -71,6 +72,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export const Consultas = () => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const [maxslider,setmaxslider]= useState(0)
+    const [sliderValue, setSliderValue] = useState(0);
+
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -90,7 +94,15 @@ export const Consultas = () => {
 
     useEffect(() => {
         setpolyline(policonsultas)
+        if(policonsultas.length>1){
+            setmaxslider(policonsultas.length-1)
+        }
     }, [policonsultas.length])
+
+    const handleSliderChange = (newValue) => {
+        setSliderValue(newValue.target.value);
+    };
+
     return (
         <Box sx={{ display: 'flex'}}>
             <CssBaseline />
@@ -108,6 +120,10 @@ export const Consultas = () => {
                     <Typography variant="h6" noWrap component="div">
                         Barra de consultas
                     </Typography>
+                    <Slider min={0} max={maxslider} valueLabelDisplay="auto"
+                        sx={{color:'red',marginTop:2}}
+                        onChange={(newValue) => handleSliderChange(newValue)}
+                    />
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -149,7 +165,7 @@ export const Consultas = () => {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                <ReactMapConsulta polyline={polyline} {...Datos}/>
+                <ReactMapConsulta sliderValue={sliderValue} polyline={polyline} {...Datos}/>
             </Main>
     </Box>
     )

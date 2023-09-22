@@ -15,10 +15,10 @@ export const SideBar = () => {
     const dispatch = useDispatch();
 
     const [maxdatefi, setmaxdatefi] = useState(today);
-    const [mindateff, setmindateff] = useState(newmin);
+    const [mindateff, setmindateff] = useState(today);
 
     const [finalDate, setfinalDate] = useState(today)
-    const [initialDate, setinitialDate] = useState(newmin);
+    const [initialDate, setinitialDate] = useState(today);
 
     const newmaxdate = (data) => {
         setfinalDate(data) 

@@ -7,27 +7,40 @@ import { useSelector } from 'react-redux';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { IconButton } from '@mui/material';
 
-export const ReactMapConsulta = ({lat,long,polyline=[]}) => {
+const FinalMarker = ({pos}) =>{
+    if(pos[0]!=0){
+        return(
+            <Marker position={pos} icon={FlagIcon} >
+                <Popup><pre>final <a href="https://www.freepik.es/icono/bandera_559219#fromView=search&term=flag&page=1&position=34">Icon by Prosymbols</a></pre></Popup>
+            </Marker>
+        )
+    }
+    return(null)
+}
+
+export const ReactMapConsulta = ({lat,long,polyline=[],sliderValue=0}) => {
 
     const {datosconsulta} = useSelector(state => state.dates)
+    var latlon,condf,latlon2,latf,longf;
+
     if(polyline.length != 0) {
 
-        var latlon=polyline[0]
+        latlon=polyline[0]
         lat=latlon[0].toString();
         long=latlon[1].toString();
 
-        var condf=polyline.length-1;
-        var latlon2=polyline[condf]
-        var latf=latlon2[0].toString();
-        var longf=latlon2[1].toString();
+        condf=polyline.length-1;
+        latlon2=polyline[condf]
+        latf=latlon2[0].toString();
+        longf=latlon2[1].toString();
     } else {
         lat=lat.toString();
         long=long.toString();
-        var latf=0;
-        var longf=0;
+        latf=0;
+        longf=0;
     }
-    var [center, setcenter] = useState([lat,long]);
-    var [mfinal, setmfinal] = useState([0,0])
+    const [center, setcenter] = useState([lat,long]);
+    const [mfinal, setmfinal] = useState([0,0])
 
     useEffect(() => { 
         setcenter([lat,long])
@@ -53,7 +66,7 @@ export const ReactMapConsulta = ({lat,long,polyline=[]}) => {
     return (
         <div>
             <MapContainer center={center} zoom={4} ref={mapRef}>
-                <ChangeView center={center} zoom={16} />
+                <ChangeView center={center}/>
                 <Polyline pathOptions={limeOptions} positions={polyline} />
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -69,9 +82,19 @@ export const ReactMapConsulta = ({lat,long,polyline=[]}) => {
                         </Marker>
                     ))
                 }
-                <Marker position={mfinal} icon={FlagIcon} >
-                    <Popup><pre>final <a href="https://www.freepik.es/icono/bandera_559219#fromView=search&term=flag&page=1&position=34">Icon by Prosymbols</a></pre></Popup>
-                </Marker>
+                <FinalMarker pos={mfinal}/>
+                {
+                    datosconsulta.length
+                    ? <div>
+                        <Popup position={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} onClose={true}>
+                            <pre>
+                                {"Fecha: "+ datosconsulta[sliderValue].Fecha.split('T')[0] +" Hora: " + datosconsulta[sliderValue].Hora+" id: "+datosconsulta[sliderValue].IdEnvio}
+                            </pre>
+                        </Popup>
+                        <ChangeView center={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} />
+                    </div>
+                    :null
+                }
             </MapContainer>
             <IconButton
                 onClick={centerMap}

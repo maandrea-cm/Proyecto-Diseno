@@ -16,10 +16,10 @@ export const conexion = mysql.createConnection({
 });
 
 function verifecha(a,m,d) {
-    if (d < 10) {
+    if (d.length<2 & d < 10) {
         d = "0" + d;
     }
-    if (m < 10) {
+    if ( m.length<2 & m < 10) {
         m = "0" + m;
     }
     return(a+'-'+m+'-'+d)
