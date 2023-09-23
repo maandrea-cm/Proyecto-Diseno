@@ -11,7 +11,7 @@ const FinalMarker = ({pos}) =>{
     if(pos[0]!=0){
         return(
             <Marker position={pos} icon={FlagIcon} >
-                <Popup><pre>final <a href="https://www.freepik.es/icono/bandera_559219#fromView=search&term=flag&page=1&position=34">Icon by Prosymbols</a></pre></Popup>
+                <Popup><pre>final</pre></Popup>
             </Marker>
         )
     }

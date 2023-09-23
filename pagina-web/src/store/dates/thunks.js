@@ -1,4 +1,5 @@
 
+import Swal from 'sweetalert2';
 import env from '../../../env';
 import { polilineDates, searchingDates} from './datesSlice';
 
@@ -22,7 +23,9 @@ export const searchDatesPolilinewtime = (inicial,final) => {
         await fetch(`${env.FETCHURL}/consultas?inicial=${inicial}&final=${final}`)
         .then(response => response.json())
         .then(data => {
-            console.log(data)
+            if (data.data.length==0){
+                Swal.fire('No se encontraron datos');
+            }
             dispatch(polilineDates(data.data));
         })
     }
