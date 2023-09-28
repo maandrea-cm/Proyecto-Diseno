@@ -84,7 +84,7 @@ export const ReactMapConsulta = ({lat,long,polyline=[],sliderValue=0}) => {
                 }
                 <FinalMarker pos={mfinal}/>
                 {
-                    datosconsulta.length
+                    datosconsulta[sliderValue]
                     ? <div>
                         <Popup position={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} onClose={true}>
                             <pre>

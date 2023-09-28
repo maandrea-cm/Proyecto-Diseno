@@ -66,9 +66,6 @@ export const ReactMap = ({id,polireal}) => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
                 <StartMarker pos={center} cond={condicon}/>
-                {/* <Marker position={center} icon={StartIcon} className="marcador">
-                    <Popup><pre>{"Latitude: "+ center[0]+ " ,Longitude: "+ center[1]}</pre></Popup>
-                </Marker> */}
                 {
                     polireal.map(punto =>(
                         <Marker key={punto.IdEnvio} position={[punto.Latitud.toString(),punto.Longitud.toString()]} icon={CircleIcon}>
