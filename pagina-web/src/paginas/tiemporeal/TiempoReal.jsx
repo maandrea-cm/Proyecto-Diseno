@@ -72,7 +72,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export const TiempoReal = () => {
 
     const theme = useTheme();
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
