@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -16,11 +16,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { ReactMapConsulta } from '../componentes/mapa/ReactMapConsulta';
-import { useSelector } from 'react-redux';
-import HomeIcon from '@mui/icons-material/Home';
-import { SideBar } from '../componentes/SideBar';
-import { Slider } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux'
+import { Table } from './componentes/Table'
+import { ReactMap } from './componentes/ReactMap'
+import {searchDates} from '../../store/dates/thunks'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const drawerWidth = 280;
 
@@ -40,8 +40,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
             }),
             marginLeft: 0,
         }),
-        }),
-    );
+    }),
+);
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -69,40 +69,24 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-export const Consultas = () => {
-    const theme = useTheme();
-    const [open, setOpen] = useState(false);
-    const [maxslider,setmaxslider]= useState(0)
-    const [sliderValue, setSliderValue] = useState(0);
+export const TiempoReal = () => {
 
+    const theme = useTheme();
+    const [open, setOpen] = useState(true);
 
     const handleDrawerOpen = () => {
         setOpen(true);
     };
-
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    const Datos = {
-        lat:11.018055555556,
-        long:-74.851111111111,
-        id: 0
-    }
 
-    const {policonsultas} = useSelector(state => state.dates)
-    const [polyline, setpolyline] = useState([])
-
-    useEffect(() => {
-        setpolyline(policonsultas)
-        if(policonsultas.length>1){
-            setmaxslider(policonsultas.length-1)
-        }
-    }, [policonsultas.length])
-
-    const handleSliderChange = (newValue) => {
-        setSliderValue(newValue.target.value);
-    };
-
+    const dispatch=useDispatch();
+    setInterval(() => {
+        dispatch(searchDates())
+    }, 1000);
+    const Datos = useSelector(state => state.dates)
+    
     return (
         <Box sx={{ display: 'flex'}}>
             <CssBaseline />
@@ -118,12 +102,8 @@ export const Consultas = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Barra de consultas
+                        Barra de Inicio
                     </Typography>
-                    <Slider min={0} max={maxslider} valueLabelDisplay="auto"
-                        sx={{color:'red',marginTop:2}}
-                        onChange={(newValue) => handleSliderChange(newValue)}
-                    />
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -141,7 +121,7 @@ export const Consultas = () => {
             >
                 <DrawerHeader>
                     <Typography variant='h6' noWrap component='div'>
-                        Seleccion de Rango de fechas
+                        Home
                     </Typography>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -150,23 +130,21 @@ export const Consultas = () => {
                 <Divider />
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton component="a" href="/">
+                        <ListItemButton component="a" href="/consultas">
                             <ListItemIcon>
-                                <HomeIcon/>
+                                <CalendarMonthIcon/>
                             </ListItemIcon>
-                            <ListItemText primary={'Home'} />
+                            <ListItemText primary={'Consultas'} />
                         </ListItemButton>
                     </ListItem>
                 </List>
                 <Divider />
-                <List>
-                    <SideBar/>
-                </List>
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                <ReactMapConsulta sliderValue={sliderValue} polyline={polyline} {...Datos}/>
+                <Table {...Datos}/>
+                <ReactMap {...Datos}/>
             </Main>
-    </Box>
+        </Box>
     )
 }

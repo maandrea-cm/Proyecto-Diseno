@@ -3,7 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Box,Button,Typography } from "@mui/material"
 import { useDispatch } from 'react-redux';
-import {searchDatesPolilinewtime } from '../store/dates/thunks';
+import {searchDatesPolilinewtime } from '../../../store/dates/thunks';
 
 
 export const SideBar = () => {

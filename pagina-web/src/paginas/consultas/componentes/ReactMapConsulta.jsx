@@ -1,8 +1,8 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import '../../css/react-leaflet.css';
-import {CircleIcon, FlagIcon, MarkerIcon, StartIcon, TaxiIcon} from './react-leaflet-icon.js';
+import '../../../utilidades/react-leaflet.css';
+import {CircleIcon, FlagIcon, MarkerIcon, StartIcon, TaxiIcon} from '../../../utilidades/react-leaflet-icon.js';
 import { useSelector } from 'react-redux';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { IconButton } from '@mui/material';
@@ -65,7 +65,7 @@ export const ReactMapConsulta = ({lat,long,polyline=[],sliderValue=0}) => {
 
     return (
         <div>
-            <MapContainer center={center} zoom={4} ref={mapRef}>
+            <MapContainer center={center} zoom={15} ref={mapRef}>
                 <ChangeView center={center}/>
                 <Polyline pathOptions={limeOptions} positions={polyline} />
                 <TileLayer
@@ -75,23 +75,18 @@ export const ReactMapConsulta = ({lat,long,polyline=[],sliderValue=0}) => {
                 <Marker position={center} icon={StartIcon} >
                     <Popup><pre>inicio</pre></Popup>
                 </Marker>
-                {
-                    datosconsulta.map(punto =>(
-                        <Marker key={punto.IdEnvio} position={[punto.Latitud.toString(),punto.Longitud.toString()]} icon={CircleIcon}>
-                            <Popup><pre>{"Fecha: "+punto.Fecha.split('T')[0]+" Hora: " + punto.Hora}</pre></Popup>
-                        </Marker>
-                    ))
-                }
                 <FinalMarker pos={mfinal}/>
                 {
                     datosconsulta[sliderValue]
                     ? <div>
+                        <Marker position={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} icon={CircleIcon}>
+                            <ChangeView center={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} />
+                        </Marker>
                         <Popup position={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} onClose={true}>
                             <pre>
-                                {"Fecha: "+ datosconsulta[sliderValue].Fecha.split('T')[0] +" Hora: " + datosconsulta[sliderValue].Hora+" id: "+datosconsulta[sliderValue].IdEnvio}
+                                {"Fecha: "+ datosconsulta[sliderValue].Fecha.split('T')[0] +" Hora: " + datosconsulta[sliderValue].Hora}
                             </pre>
                         </Popup>
-                        <ChangeView center={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} />
                     </div>
                     :null
                 }
