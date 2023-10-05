@@ -5,3 +5,7 @@
     z-index: 0;
     align-content: 'center';
 }
+.leaflet-popup-content-wrapper{
+    height: 300px;
+    overflow-y: scroll;
+}

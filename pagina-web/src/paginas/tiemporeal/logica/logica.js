@@ -2,7 +2,6 @@ export function vectorPoli ({polireal}) {
 
     var polyline=[],idinit,idfin,latlon,centeri,centerf,lat,long;
     if(polireal.length>1){
-        console.log('entramos aqui')
         polireal.map(datos =>{
             latlon=[datos.Latitud,datos.Longitud];
             polyline.push(latlon)

@@ -20,7 +20,7 @@ import { ReactMapConsulta } from './componentes/ReactMapConsulta';
 import { useSelector } from 'react-redux';
 import HomeIcon from '@mui/icons-material/Home';
 import { SideBar } from './componentes/SideBar';
-import { Slider } from '@mui/material';
+// import { Slider } from '@mui/material';
 
 const drawerWidth = 280;
 
@@ -80,8 +80,8 @@ export const Consultas = () => {
     const theme = useTheme();
     const [open, setOpen] = useState(true);
 
-    const [maxslider,setmaxslider]= useState(0)
-    const [sliderValue, setSliderValue] = useState(0);
+    // const [maxslider,setmaxslider]= useState(0)
+    // const [sliderValue, setSliderValue] = useState(0);
 
 
     const handleDrawerOpen = () => {
@@ -97,14 +97,14 @@ export const Consultas = () => {
 
     useEffect(() => {
         setpolyline(policonsultas)
-        if(policonsultas.length>1){
-            setmaxslider(policonsultas.length-1)
-        }
+        // if(policonsultas.length>1){
+        //     setmaxslider(policonsultas.length-1)
+        // }
     }, [policonsultas.length])
 
-    const handleSliderChange = (newValue) => {
-        setSliderValue(newValue.target.value);
-    };
+    // const handleSliderChange = (newValue) => {
+    //     setSliderValue(newValue.target.value);
+    // };
 
     return (
         <Box sx={{ display: 'flex'}}>
@@ -123,14 +123,14 @@ export const Consultas = () => {
                     <Typography variant="h6" noWrap component="div">
                         Barra de consultas
                     </Typography>
-                    {
+                    {/* {
                         policonsultas.length
                         ?<Slider min={0} max={maxslider} valueLabelDisplay="auto"
                             sx={{color:'red',marginTop:2}}
                             onChange={(newValue) => handleSliderChange(newValue)}
                         />
                         :null
-                    }
+                    } */}
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -172,7 +172,8 @@ export const Consultas = () => {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                <ReactMapConsulta sliderValue={sliderValue} polyline={polyline} {...Datos}/>
+                {/* <ReactMapConsulta sliderValue={sliderValue} polyline={polyline} {...Datos}/> */}
+                <ReactMapConsulta polyline={polyline} {...Datos}/>
             </Main>
     </Box>
     )

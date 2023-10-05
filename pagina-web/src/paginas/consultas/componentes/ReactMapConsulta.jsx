@@ -1,11 +1,12 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline, useMapEvents, Circle} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../../../utilidades/react-leaflet.css';
 import {CircleIcon, FlagIcon, MarkerIcon, StartIcon, TaxiIcon} from '../../../utilidades/react-leaflet-icon.js';
 import { useSelector } from 'react-redux';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { IconButton } from '@mui/material';
+import { fillBlueOptions, isInCircle } from '../../tiemporeal/logica/consultas';
 
 const FinalMarker = ({pos}) =>{
     if(pos[0]!=0){
@@ -17,8 +18,20 @@ const FinalMarker = ({pos}) =>{
     }
     return(null)
 }
+const ClickHandler = ({ handleMapClick }) => {
+    const map = useMapEvents({
+    click: (e) => {
+        handleMapClick(e);
+    },
+    });
+    return null;
+};
 
-export const ReactMapConsulta = ({lat,long,polyline=[],sliderValue=0}) => {
+export const ReactMapConsulta = ({lat,long,polyline}) => {
+
+    const [polyCircle,setPolyCirlce] = useState([])
+    const [circleOpen, setCircleOpen] = useState(false);
+    const [clickedPosition, setClickedPosition] = useState(null);
 
     const {datosconsulta} = useSelector(state => state.dates)
     var latlon,condf,latlon2,latf,longf;
@@ -62,7 +75,16 @@ export const ReactMapConsulta = ({lat,long,polyline=[],sliderValue=0}) => {
 
     const limeOptions = { color: 'lime' }
     
-
+    const handleMapClick = (e) => {
+        const clickedCoordinates = e.latlng;
+        setClickedPosition(clickedCoordinates);
+        const newPolip = isInCircle(datosconsulta,clickedCoordinates)
+        if(newPolip){
+            setPolyCirlce(newPolip)
+            setCircleOpen(true);
+        }
+        
+    };
     return (
         <div>
             <MapContainer center={center} zoom={15} ref={mapRef}>
@@ -72,11 +94,38 @@ export const ReactMapConsulta = ({lat,long,polyline=[],sliderValue=0}) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
+                {/* Eventos de click */}
+                <ClickHandler handleMapClick={handleMapClick} />
+                {
+                    circleOpen
+                    ?<>
+                        <Circle center={clickedPosition} pathOptions={fillBlueOptions} radius={200} />
+                        <ChangeView center={clickedPosition}/>
+                    </>
+                    :null
+                }
+                {
+                    polyCircle.length>0
+                    ?<Popup id='PopupLupa' position={[polyCircle[0].Latitud.toString(),polyCircle[0].Longitud.toString()]} onClose={true}>
+                        
+                            {
+                                polyCircle.map(punto =>{
+                                    return(
+                                        <pre key={punto.idEnvio}>
+                                            {`Fecha: ${punto.Fecha.split('T')[0]} Hora: ${punto.Hora}`}
+                                        </pre> 
+                                    )})
+                            }
+                        
+                    </Popup>
+                    :null
+                }
+                {/* cierra eventos de click */}
                 <Marker position={center} icon={StartIcon} >
                     <Popup><pre>inicio</pre></Popup>
                 </Marker>
                 <FinalMarker pos={mfinal}/>
-                {
+                {/* {
                     datosconsulta[sliderValue]
                     ? <div>
                         <Marker position={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} icon={CircleIcon}>
@@ -89,7 +138,7 @@ export const ReactMapConsulta = ({lat,long,polyline=[],sliderValue=0}) => {
                         </Popup>
                     </div>
                     :null
-                }
+                } */}
             </MapContainer>
             <IconButton
                 onClick={centerMap}
@@ -101,8 +150,8 @@ export const ReactMapConsulta = ({lat,long,polyline=[],sliderValue=0}) => {
                     backgroundColor:'whithe',
                     ':hover': {backgroundColor:'green',opacity:0.7},
                     position:'absolute',
-                    right:'10vw',
-                    bottom:'-15vh'
+                    right:'8vw',
+                    bottom:'5vh'
                 }}
                 >
                 <MyLocationIcon sx={{fontSize:20}}/>
