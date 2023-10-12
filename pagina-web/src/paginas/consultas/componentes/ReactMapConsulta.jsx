@@ -2,11 +2,11 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline, useMapEvents, Circle} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../../../utilidades/react-leaflet.css';
-import {CircleIcon, FlagIcon, MarkerIcon, StartIcon, TaxiIcon} from '../../../utilidades/react-leaflet-icon.js';
+import {CircleIcon, FlagIcon, MarkerIcon, StartIcon2, TaxiIcon} from '../../../utilidades/react-leaflet-icon.js';
 import { useSelector } from 'react-redux';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { IconButton } from '@mui/material';
-import { fillBlueOptions, isInCircle } from '../../tiemporeal/logica/consultas';
+import { fillBlueOptions, isInCircle, verificarcontinuidad } from '../../tiemporeal/logica/consultas';
 
 const FinalMarker = ({pos}) =>{
     if(pos[0]!=0){
@@ -32,6 +32,8 @@ export const ReactMapConsulta = ({lat,long,polyline}) => {
     const [polyCircle,setPolyCirlce] = useState([])
     const [circleOpen, setCircleOpen] = useState(false);
     const [clickedPosition, setClickedPosition] = useState(null);
+    const [multiPoly, setMultiPoly] = useState([])
+    const [datesToCircle, setDatesToCircle] = useState([])
 
     const {datosconsulta} = useSelector(state => state.dates)
     var latlon,condf,latlon2,latf,longf;
@@ -58,6 +60,9 @@ export const ReactMapConsulta = ({lat,long,polyline}) => {
     useEffect(() => { 
         setcenter([lat,long])
         setmfinal([latf,longf])
+        const {polylines,newVectorCircle} = verificarcontinuidad(datosconsulta)
+        setMultiPoly(polylines)
+        setDatesToCircle(newVectorCircle)
     }, [polyline.length])
     
     function ChangeView({ center, zoom }) {
@@ -89,7 +94,7 @@ export const ReactMapConsulta = ({lat,long,polyline}) => {
         <div>
             <MapContainer center={center} zoom={15} ref={mapRef}>
                 <ChangeView center={center}/>
-                <Polyline pathOptions={limeOptions} positions={polyline} />
+                <Polyline pathOptions={limeOptions} positions={multiPoly} />
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -120,25 +125,36 @@ export const ReactMapConsulta = ({lat,long,polyline}) => {
                     </Popup>
                     :null
                 }
-                {/* cierra eventos de click */}
-                <Marker position={center} icon={StartIcon} >
+                {/* <Marker position={center} icon={StartIcon} >
                     <Popup><pre>inicio</pre></Popup>
                 </Marker>
-                <FinalMarker pos={mfinal}/>
-                {/* {
-                    datosconsulta[sliderValue]
-                    ? <div>
-                        <Marker position={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} icon={CircleIcon}>
-                            <ChangeView center={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} />
-                        </Marker>
-                        <Popup position={[datosconsulta[sliderValue].Latitud.toString(),datosconsulta[sliderValue].Longitud.toString()]} onClose={true}>
-                            <pre>
-                                {"Fecha: "+ datosconsulta[sliderValue].Fecha.split('T')[0] +" Hora: " + datosconsulta[sliderValue].Hora}
-                            </pre>
-                        </Popup>
-                    </div>
+                <FinalMarker pos={mfinal}/> */}
+                {
+                    multiPoly.length>0
+                    ?<>
+                        {
+                            multiPoly.map((poly)=>{
+                                console.log(poly.length)
+                                return<>{
+
+                                poly.length>=4
+                                ?<>
+                                    <Marker position={[poly[0][0].toString(),poly[0][1].toString()]} icon={StartIcon2} >
+                                        <Popup><pre>inicio</pre></Popup>
+                                    </Marker>
+                                    <Marker position={[poly[poly.length-1][0].toString(),poly[poly.length-1][1].toString()]} icon={CircleIcon} >
+                                        <Popup><pre>Fin</pre></Popup>
+                                    </Marker>
+                                </>
+                                :null
+                                }
+                                
+                                </>
+                            })
+                        }
+                    </>
                     :null
-                } */}
+                }
             </MapContainer>
             <IconButton
                 onClick={centerMap}

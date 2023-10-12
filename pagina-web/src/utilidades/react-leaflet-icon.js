@@ -36,3 +36,7 @@ export const StartIcon = L.icon({
     iconUrl : start,
     iconSize: [30,30]
 })
+export const StartIcon2 = L.icon({
+    iconUrl : start,
+    iconSize: [10,10]
+})
